@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Dependency {
+  idDependency       String   @id @default(cuid())  
+  dependencyName     String
+
+  // One-to-many relationship with the Classroom model
+  classrooms         Classroom[]  @relation("ClassroomDependency")
+
+  @@map("dependencia")  
+}
+
+
+model Classroom {
+  idClassroom             String   @id @default(cuid())  
+  name                    String
+  building                String
+  level                   Int
+  width                   Decimal    @db.Decimal(10, 2)   // Maps to a decimal with 2 decimal places
+  length                  Decimal    @db.Decimal(10, 2)   // Maps to a decimal with 2 decimal places
+  computerEquipment       Int
+  desk                    Int
+  currentChairs           Int
+  currentTables           Int
+  maxChairsCapacity       Int
+  maxTablesCapacity       Int
+  lamps                   Int
+  thermalLevel            String
+  airConditioning         Boolean
+  Dependency_idDependency String   // Foreign key for the relationship with the `Dependency` model
+
+  // Relationship with the Dependency table
+  Dependency Dependency @relation("ClassroomDependency", fields: [Dependency_idDependency], references: [idDependency])
+
+  @@map("classroom")  
+}
