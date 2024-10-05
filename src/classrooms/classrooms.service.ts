@@ -1,26 +1,42 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClassroomDto } from './dto/create-classroom.dto';
 import { UpdateClassroomDto } from './dto/update-classroom.dto';
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class ClassroomsService {
-  create(createClassroomDto: CreateClassroomDto) {
-    return 'This action adds a new classroom';
+
+  constructor (
+    private prisma: PrismaService
+  ) {}
+
+  async create(createClassroomDto: CreateClassroomDto) {
+
+    const newClassroom = await this.prisma.classroom.create({ data: {
+      ...createClassroomDto
+    }});
+
+    return newClassroom; 
   }
 
-  findAll() {
-    return `This action returns all classrooms`;
+  async findAll() {
+    return await this.prisma.classroom.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} classroom`;
+  findOne(id: string) {
+    const classroomFound = this.prisma.classroom.findUnique({ where: { idClassroom: id } });
+
+    if (!classroomFound) 
+      throw new NotFoundException(`Usuario con ${id} no encontrado`);
+
+    return classroomFound;
   }
 
-  update(id: number, updateClassroomDto: UpdateClassroomDto) {
+  update(id: string, updateClassroomDto: UpdateClassroomDto) {
     return `This action updates a #${id} classroom`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} classroom`;
+  remove(id: string) {
+    return this.prisma.classroom.delete({ where: { idClassroom: id } });
   }
 }

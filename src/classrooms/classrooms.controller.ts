@@ -5,6 +5,7 @@ import { UpdateClassroomDto } from './dto/update-classroom.dto';
 
 @Controller('classrooms')
 export class ClassroomsController {
+
   constructor(private readonly classroomsService: ClassroomsService) {}
 
   @Post()
@@ -19,16 +20,16 @@ export class ClassroomsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.classroomsService.findOne(+id);
+    return this.classroomsService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateClassroomDto: UpdateClassroomDto) {
-    return this.classroomsService.update(+id, updateClassroomDto);
+    return this.classroomsService.update(id, updateClassroomDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.classroomsService.remove(+id);
+    return this.classroomsService.remove(id);
   }
 }

@@ -40,10 +40,26 @@ model Classroom {
   lamps                   Int
   thermalLevel            String
   airConditioning         Boolean
-  Dependency_idDependency String   // Foreign key for the relationship with the `Dependency` model
+  Dependency_idDependency String?   // Foreign key for the relationship with the `Dependency` model
 
   // Relationship with the Dependency table
-  Dependency Dependency @relation("ClassroomDependency", fields: [Dependency_idDependency], references: [idDependency])
+  Dependency Dependency? @relation("ClassroomDependency", fields: [Dependency_idDependency], references: [idDependency]) 
 
   @@map("classroom")  
+}
+
+model Teacher {
+  idTeacher            String   @id @default(cuid())
+  name                 String   
+  lastName             String  
+  personalNumber       Int      @unique 
+  antiquity            Int?    
+  personalAccount      String?  
+  institutionalAccount  String? 
+  uvAdmissionDate      DateTime? 
+  birthdate            DateTime? 
+  createdAt            DateTime? @default(now()) 
+  updatedAt            DateTime? @updatedAt
+
+  @@map("teacher")
 }
