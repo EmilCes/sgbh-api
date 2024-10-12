@@ -32,7 +32,7 @@ model Classroom {
   width                   Decimal    @db.Decimal(10, 2)   // Maps to a decimal with 2 decimal places
   length                  Decimal    @db.Decimal(10, 2)   // Maps to a decimal with 2 decimal places
   computerEquipment       Int
-  desk                    Int
+  deskWithChair           Int
   currentChairs           Int
   currentTables           Int
   maxChairsCapacity       Int

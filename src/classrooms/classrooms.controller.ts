@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put, UseGuards } from '@nestjs/common';
 import { ClassroomsService } from './classrooms.service';
 import { CreateClassroomDto } from './dto/create-classroom.dto';
 import { UpdateClassroomDto } from './dto/update-classroom.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('classrooms')
+@UseGuards(JwtAuthGuard)
 export class ClassroomsController {
 
   constructor(private readonly classroomsService: ClassroomsService) {}
@@ -35,7 +37,7 @@ export class ClassroomsController {
     return this.classroomsService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateClassroomDto: UpdateClassroomDto) {
     return this.classroomsService.update(id, updateClassroomDto);
   }

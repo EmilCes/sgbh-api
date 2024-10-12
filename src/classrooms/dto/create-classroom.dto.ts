@@ -6,7 +6,7 @@ export class CreateClassroomDto {
     width: number;
     length: number;
     computerEquipment: number;
-    desk: number;
+    deskWithChair: number;
     currentChairs: number;
     currentTables: number;
     maxChairsCapacity: number;

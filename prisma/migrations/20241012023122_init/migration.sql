@@ -15,7 +15,7 @@ CREATE TABLE `classroom` (
     `width` DECIMAL(10, 2) NOT NULL,
     `length` DECIMAL(10, 2) NOT NULL,
     `computerEquipment` INTEGER NOT NULL,
-    `desk` INTEGER NOT NULL,
+    `deskWithChair` INTEGER NOT NULL,
     `currentChairs` INTEGER NOT NULL,
     `currentTables` INTEGER NOT NULL,
     `maxChairsCapacity` INTEGER NOT NULL,
