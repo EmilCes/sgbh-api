@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ClassroomsService } from './classrooms.service';
 import { CreateClassroomDto } from './dto/create-classroom.dto';
 import { UpdateClassroomDto } from './dto/update-classroom.dto';
@@ -14,8 +14,20 @@ export class ClassroomsController {
   }
 
   @Get()
-  findAll() {
-    return this.classroomsService.findAll();
+  async findAll(
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+    @Query('searchTerm') searchTerm?: string
+  ) {
+
+    const limitNumber = Math.max(1, Number(limit));
+    const pageNumber = Math.max(1, Number(page));
+
+    const { classrooms, total } = await this.classroomsService.findAll(pageNumber, limitNumber, searchTerm);
+    const lastPage = Math.ceil(total / limitNumber);
+
+    return { classrooms, total, lastPage };
+
   }
 
   @Get(':id')

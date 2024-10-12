@@ -6,37 +6,74 @@ import { PrismaService } from 'src/prisma.service';
 @Injectable()
 export class ClassroomsService {
 
-  constructor (
+  constructor(
     private prisma: PrismaService
-  ) {}
+  ) { }
 
   async create(createClassroomDto: CreateClassroomDto) {
 
-    const newClassroom = await this.prisma.classroom.create({ data: {
-      ...createClassroomDto
-    }});
+    const newClassroom = await this.prisma.classroom.create({
+      data: {
+        ...createClassroomDto
+      }
+    });
 
-    return newClassroom; 
+    return newClassroom;
   }
 
-  async findAll() {
-    return await this.prisma.classroom.findMany();
+  async findAll(page: number, limit: number, searchTerm?: string) {
+
+    const where = searchTerm
+      ? {
+        OR: [
+          { name: { startsWith: searchTerm } }
+        ]
+      }
+      : {};
+
+    const total = await this.prisma.classroom.count({
+      where
+    });
+
+    const classrooms = await this.prisma.classroom.findMany({
+      where,
+      skip: (page - 1) * limit,
+      take: limit
+    });
+
+    return { classrooms, total };
+
   }
 
-  findOne(id: string) {
+  async findOne(id: string) {
     const classroomFound = this.prisma.classroom.findUnique({ where: { idClassroom: id } });
 
-    if (!classroomFound) 
+    if (!classroomFound)
       throw new NotFoundException(`Usuario con ${id} no encontrado`);
 
     return classroomFound;
   }
 
-  update(id: string, updateClassroomDto: UpdateClassroomDto) {
-    return `This action updates a #${id} classroom`;
+  async update(id: string, updateClassroomDto: UpdateClassroomDto) {
+    const existingClassroom = await this.prisma.classroom.findUnique({
+      where: {
+        idClassroom: id
+      }
+    });
+
+    if (!existingClassroom) {
+      throw new NotFoundException(`Aula no encontrada.`)
+    }
+
+    const updatedClassroom = await this.prisma.classroom.update({
+      where: { idClassroom: id },
+      data: updateClassroomDto
+    });
+
+    return updatedClassroom;
   }
 
-  remove(id: string) {
+  async remove(id: string) {
     return this.prisma.classroom.delete({ where: { idClassroom: id } });
   }
 }
