@@ -54,8 +54,12 @@ export class TeachersService {
     const teachers = teachersbD.map(teacher => {
       return {
         ...teacher,
-        birthdate: teacher.birthdate.toISOString().split('T')[0],
-        uvAdmissionDate: teacher.uvAdmissionDate.toISOString().split('T')[0]
+        birthdate: teacher.birthdate 
+          ? teacher.birthdate.toISOString().split('T')[0]
+          : null,
+        uvAdmissionDate: teacher.uvAdmissionDate
+          ? teacher.uvAdmissionDate.toISOString().split('T')[0]
+          : null
       }
     });
 
