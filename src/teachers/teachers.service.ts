@@ -45,13 +45,13 @@ export class TeachersService {
       where
     });
 
-    const teachersbD = await this.prisma.teacher.findMany({
+    const usersDB = await this.prisma.teacher.findMany({
       where,
       skip: (page - 1) * limit,
       take: limit
     });
 
-    const teachers = teachersbD.map(teacher => {
+    const teachers = usersDB.map(teacher => {
       return {
         ...teacher,
         birthdate: teacher.birthdate 

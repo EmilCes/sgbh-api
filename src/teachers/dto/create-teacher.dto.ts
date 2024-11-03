@@ -26,6 +26,14 @@ export class CreateTeacherDto {
     institutionalAccount?: string;
 
     @IsOptional()
+    @IsString({ message: 'El numero teléfonico debe ser una cadena' })
+    phoneNumber?: string;
+
+    @IsOptional()
+    @IsString({ message: 'La extensión debe ser una cadena' })
+    extension?: string;
+
+    @IsOptional()
     uvAdmissionDate?: Date;
 
     @IsOptional()

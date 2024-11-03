@@ -3,6 +3,7 @@ import { ClassroomsModule } from './classrooms/classrooms.module';
 import { TeachersModule } from './teachers/teachers.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -11,7 +12,8 @@ import { ConfigModule } from '@nestjs/config';
     AuthModule,
     ConfigModule.forRoot({
       isGlobal: true
-    })
+    }),
+    UsersModule
   ],
 })
 export class AppModule {}

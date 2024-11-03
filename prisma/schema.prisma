@@ -55,11 +55,30 @@ model Teacher {
   personalNumber       Int      @unique 
   antiquity            Int?    
   personalAccount      String?  
-  institutionalAccount  String? 
+  institutionalAccount String?
+  phoneNumber          String?
+  extension            String?
   uvAdmissionDate      DateTime? 
   birthdate            DateTime? 
   createdAt            DateTime? @default(now()) 
   updatedAt            DateTime? @updatedAt
 
   @@map("teacher")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model User {
+  idUser               Int   @id @default(autoincrement())
+  name                 String   
+  lastName             String  
+  institutionalEmail   String @unique
+  role                  Role
+  createdAt            DateTime? @default(now()) 
+  updatedAt            DateTime? @updatedAt
+
+  @@map("user")
 }

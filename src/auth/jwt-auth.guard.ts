@@ -21,12 +21,14 @@ export class JwtAuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(token);
       request.user = payload;
 
+      const userRole = payload.role;
+
       const expirationTime = payload.exp * 1000;
       const currentTime = Date.now();
       const timeUntilExpiration = expirationTime - currentTime;
 
-      if (timeUntilExpiration <= 5 * 60 * 1000) { // 5 minutes
-        const newToken = this.authService.generateJwt(payload.email);
+      if (timeUntilExpiration <= 5 * 60 * 1000) {
+        const newToken = this.authService.generateJwt(payload.email, userRole);
         response.setHeader('New-Access-Token', newToken.token);
       }
       
